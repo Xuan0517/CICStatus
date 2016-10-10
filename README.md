@@ -18,7 +18,6 @@ Key                             | Description
 **SURNAME**                     | Your surname
 **DOB**                         | Your DOB
 **POB**                         | Set to '202' by default, if you are not born in China, change to other value
---------------------------------|----------------------------------------------------------------------------
 **Sender**                      | Sender email address
 **Receiver**                    | Receiver email address
 **SMTPServer**                  | Your SMTP server
@@ -30,7 +29,13 @@ Key                             | Description
 ## Steps
 ###Clone project
 ```
-MBP:~ Xuan$ git@github.com:Xuan0517/CICStatus.git
+MBP:~ Xuan$ git clone https://github.com/Xuan0517/CICStatus.git
+Cloning into 'CICStatus'...
+remote: Counting objects: 6, done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 6 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (6/6), done.
+Checking connectivity... done.
 ```
 Or access https://github.com/Xuan0517/CICStatus usieng browser and click 'Clone or download', then click 'Download ZIP', unpack the downloaded ZIP file to any folder
 ###Check prerequisite
@@ -42,6 +47,8 @@ Python 2.7.5
 ###Run
 ```
 MBP:~ Xuan$ python CICStatus.py
+We received your application for permanent residence  on July 1, 2015.
+We started processing your application on October 1, 2015.
 ```
 
 ## TODO
