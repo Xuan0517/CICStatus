@@ -7,20 +7,23 @@ While your application was processed by CIC, you can use your UCI or Application
  3. Send query result by email
  4. Support query by Applicaiton number, UCI number, Receipt number
  5. Easy to use
- 6. ...
+ 6. ...a
 
 ## Modify key/value in script
 Open CICStatus.py with any text editor, modify the following values
 
 Key                             | Description
 --------------------------------|----------------------------------------------------------------------------
-**IDENTIFIER**                  | Your UCI number, or Application number
+**IDENTIFIERTYPE**              | Query status by Client ID Number / Unique Client Identifier (1), Receipt Number (IMM 5401) (2), Application Number / Case Number (3)
+**IDENTIFIER**                  | Your ClientID/UCI, Application/Case, or Receipt number
 **SURNAME**                     | Your surname
 **DOB**                         | Your DOB
 **POB**                         | Set to '202' by default, if you are not born in China, change to other value
 **Sender**                      | Sender email address
 **Receiver**                    | Receiver email address
 **SMTPServer**                  | Your SMTP server
+**SMTPUID**                     | Your SMTP server login user name
+**SMTPPWD**                     | Your SMTP server login password
 
 ## Prerequisite
  - Python version 2.6 or higher
@@ -47,12 +50,12 @@ Python 2.7.5
 ###Run
 ```
 MBP:~ Xuan$ python CICStatus.py
+Current query result length is 131, modify following condation if necessary.
 We received your application for permanent residence  on July 1, 2015.
 We started processing your application on October 1, 2015.
 ```
 
 ## TODO
- - Add other query types
  - ...
 
 *This is not a part of any product. You are not allowed to share this script to others (include but not limited Scripts and Textfiles), the author may have patents or pending patent applications covering subject matter described in this documentation. The furnishing of this utility does not give you any license to these patents.*
