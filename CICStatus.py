@@ -6,13 +6,16 @@ from HTMLParser import HTMLParser
 from email.mime.text import MIMEText
 from email.header import Header
 
+IDENTIFIERTYPE = '1'
 IDENTIFIER = 'nnnnnnnnn'
 SURNAME = 'XXXXXX'
 DOB = 'YYYY-MM-DD'
 
-Sender = 'yourname@company.com'
-Receiver = 'yourname@company.com'
-SMTPServer = 'company.com'
+Sender = 'cicstatus@163.com'
+Receiver = 'your@company.com'
+SMTPServer = 'smtp.163.com'
+SMTPUID = 'cicstatus'
+SMTPPWD = 'cic_status'
 Subject = 'Application Status as of ' + datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
 Result = ''
@@ -48,8 +51,7 @@ time.sleep(random.randint(3, 8))
 
 # Login to view Application Status, and get Application Details URL
 Request = urllib2.Request(BaseURL + URL0)
-#Opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(Cookie))
-FormData = { "lang": "", "_page": "_target0", "app": "", "identifierType": "1", "identifier": IDENTIFIER, "surname": SURNAME, "dateOfBirth": DOB, "countryOfBirth": "202", "_submit": "Continue" }
+FormData = { "lang": "", "_page": "_target0", "app": "", "identifierType": IDENTIFIERTYPE, "identifier": IDENTIFIER, "surname": SURNAME, "dateOfBirth": DOB, "countryOfBirth": "202", "_submit": "Continue" }
 DataEncoded = urllib.urlencode(FormData)
 Response = Opener.open(Request, DataEncoded)
 Content = Response.read()
@@ -57,7 +59,6 @@ URL1 = re.search('viewcasehistory.do.*lang=en', Content).group(0).replace("&amp;
 time.sleep(random.randint(3, 8))
 
 # View Application Details by access URL1
-#Opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(Cookie))
 Response = Opener.open(BaseURL + URL1)
 Content = Response.read()
 
@@ -66,13 +67,15 @@ Output = hp()
 Output.feed(Content)
 Output.close()
 
+print "Current query result length is " + str(len(Result)) + ", modify following condation if necessary."
+
+if len(Result) != 131:
+    MSG = MIMEText(Result, 'text', 'utf-8')
+    MSG['Subject'] = Header(Subject, 'utf-8')
+    SMTP = smtplib.SMTP() #SMTP.set_debuglevel(1)
+    SMTP.connect(SMTPServer)
+    SMTP.login(SMTPUID, SMTPPWD)
+    SMTP.sendmail(Sender, Receiver, MSG.as_string())
+    SMTP.quit()
+
 print Result
-
-MSG = MIMEText(Result, 'text', 'utf-8')
-MSG['Subject'] = Header(Subject, 'utf-8')
-
-SMTP = smtplib.SMTP()
-#smtp.set_debuglevel(1)
-SMTP.connect(SMTPServer)
-SMTP.sendmail(Sender, Receiver, MSG.as_string())
-SMTP.quit()
