@@ -18,7 +18,7 @@ SMTPUID = 'cicstatus'
 SMTPPWD = 'cic_status'
 Subject = 'Application Status as of ' + datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
-Result = ''
+Result = 'State: '
 
 BaseURL = 'https://services3.cic.gc.ca/ecas/'
 URL0 = 'authenticate.do'
@@ -27,21 +27,25 @@ class hp(HTMLParser):
     a_text = False
 
     def handle_starttag(self, tag, attr):
-        if tag == 'li':
+        if tag == 'li' or tag == 'a':
             if len(attr) == 0: pass
             else:
                 for (variable, value) in attr:
                     if variable == "class" and value == "margin-bottom-medium":
                         self.a_text = True
+                    if variable == "href" and value[0:15] == "viewcasehistory":
+                        self.a_text = True
 
     def handle_endtag(self, tag):
-        if tag == 'li':
+        if tag == 'li' or tag == 'a':
             self.a_text = False
 
     def handle_data(self, data):
         global Result
+
         if self.a_text and len(data.strip()) > 0:
             Result = Result + data.strip() + '\n'
+
 
 # Get Cookie
 Cookie = cookielib.CookieJar()
@@ -55,6 +59,12 @@ FormData = { "lang": "", "_page": "_target0", "app": "", "identifierType": IDENT
 DataEncoded = urllib.urlencode(FormData)
 Response = Opener.open(Request, DataEncoded)
 Content = Response.read()
+
+# Get applicaion state, in global variable: State
+Output = hp()
+Output.feed(Content)
+Output.close()
+
 URL1 = re.search('viewcasehistory.do.*lang=en', Content).group(0).replace("&amp;", "&")
 time.sleep(random.randint(3, 8))
 
@@ -69,13 +79,13 @@ Output.close()
 
 print "Current query result length is " + str(len(Result)) + ", modify following condation if necessary."
 
-if len(Result) != 131:
+if len(Result) != 370:
     MSG = MIMEText(Result, 'text', 'utf-8')
     MSG['Subject'] = Header(Subject, 'utf-8')
     SMTP = smtplib.SMTP() #SMTP.set_debuglevel(1)
     SMTP.connect(SMTPServer)
-    SMTP.login(SMTPUID, SMTPPWD)
     SMTP.sendmail(Sender, Receiver, MSG.as_string())
     SMTP.quit()
 
+print Subject
 print Result
