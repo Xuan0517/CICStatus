@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-
-
 import urllib2, urllib, re, smtplib, datetime, time, random, cookielib
 from cookielib import CookieJar
 from HTMLParser import HTMLParser
